@@ -3,6 +3,8 @@ package com.shopme.admin.user;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -138,5 +140,12 @@ public class UserController {
 		redirectAttributes.addFlashAttribute("message", message);
 		
 		return "redirect:/users";
+	}
+	
+	@GetMapping("/users/export/csv")
+	public void exportToCSV(HttpServletResponse response) throws IOException {
+		List<User> listUsers = service.listAll();
+		UserCsvExporter exporter = new UserCsvExporter();
+		exporter.export(listUsers, response);
 	}
 }
