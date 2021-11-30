@@ -119,8 +119,28 @@ public class CategoryService {
 					return "DuplicateAlias";
 				}
 			}
+		} else {
+			if (categoryByName != null && categoryByName.getId() != id) {
+				return "DuplicateName";
+			}
+			
+			Category categoryByAlias = repo.findByAlias(alias);
+			if (categoryByAlias != null && categoryByAlias.getId() != id) {
+				return "DuplicateAlias";
+			}
 		}
 		
 		return "OK";
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
