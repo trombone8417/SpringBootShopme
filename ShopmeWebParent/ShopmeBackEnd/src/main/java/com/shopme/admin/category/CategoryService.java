@@ -6,6 +6,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import javax.transaction.Transactional;
+
 import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.shopme.common.entity.Category;
 
 @Service
+@Transactional
 public class CategoryService {
 	@Autowired
 	private CategoryRepository repo;
@@ -166,6 +170,11 @@ public class CategoryService {
 		sortedChildren.addAll(children);
 				
 		return sortedChildren;
+	}
+	
+	
+	public void updateCategoryEnabledStatus(Integer id, boolean enabled) {
+		repo.updateEnabledStatus(id, enabled);
 	}
 }
 
