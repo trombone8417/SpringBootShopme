@@ -86,7 +86,7 @@
 		<span>No [[${entityName}]] found</span>
 	</div>
 		
-	<div th:if="${totalItems > 1}">
+	<div th:if="${totalPages > 1}">
 		<nav>
 			<ul class="pagination justify-content-center flex-wrap">
 				<li th:class="${currentPage > 1 ? 'page-item':'page-item disabled'}">

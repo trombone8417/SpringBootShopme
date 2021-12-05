@@ -108,7 +108,7 @@ public class CategoryService {
 		Iterable<Category> categoriesInDB = repo.findRootCategories(Sort.by("name").ascending());
 
 		for (Category category : categoriesInDB) {
-			if (category.getParent() == null) {
+
 				categoriesUsedInForm.add(Category.copyIdAndName(category));
 
 				Set<Category> children = sortSubCategories(category.getChildren());
@@ -118,7 +118,7 @@ public class CategoryService {
 					categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name));
 					listSubCategoriesUsedInForm(categoriesUsedInForm, subCategory, 1);
 				}
-			}
+
 		}
 
 		return categoriesUsedInForm;

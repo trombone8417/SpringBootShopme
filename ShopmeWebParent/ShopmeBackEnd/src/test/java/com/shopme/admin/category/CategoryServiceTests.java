@@ -85,7 +85,7 @@ public class CategoryServiceTests {
 	}
 	
 	@Test
-	public void testCheckUniqueInEditNewModeReturnDuplicateAlias() {
+	public void testCheckUniqueInEditModeReturnDuplicateAlias() {
 		Integer id = 1;
 		String name = "NameABC";
 		String alias = "computers";

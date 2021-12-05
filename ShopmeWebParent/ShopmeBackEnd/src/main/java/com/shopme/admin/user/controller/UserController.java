@@ -35,7 +35,7 @@ public class UserController {
 	private UserService service;
 	
 	@GetMapping("/users")
-	public String listAll(Model model) {
+	public String listFirstPage(Model model) {
 		return listByPage(1, model, "firstName","asc",null);
 	}
 	
