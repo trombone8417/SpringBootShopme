@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head(${pageTitle})" />
+<body>
+<div class="container-fluid">
+	<div th:replace="navigation :: menu"></div>
+	<div>
+		<h2>Manage Products | [[${pageTitle}]]</h2>	
+	</div>
+			
+	<form th:action="@{/products/save}" method="post" style="max-width: 500px; margin: 0 auto"
+		th:object="${product}">
+		<input type="hidden" th:field="*{id}" />
+	
+	</form>
+	
+	<div th:replace="modal_fragments :: modal_dialog"></div>
+	
+	<div th:replace="fragments :: footer"></div>
+	
+</div>
+<script type="text/javascript">
+	moduleURL = "[[@{/products}]]";
+		
+</script>
+<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>
