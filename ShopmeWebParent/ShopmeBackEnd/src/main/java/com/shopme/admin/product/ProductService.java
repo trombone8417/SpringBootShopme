@@ -3,6 +3,8 @@ package com.shopme.admin.product;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.shopme.common.entity.Product;
 
 @Service
+@Transactional
 public class ProductService {
 
 	@Autowired
@@ -52,6 +55,12 @@ public class ProductService {
 		
 		return "OK";
 	}
+	
+	
+	public void updateProductEnabledStatus(Integer id, boolean enabled) {
+		repo.updateEnabledStatus(id, enabled);
+	}
+	
 }
 
 
