@@ -1,4 +1,3 @@
-# Auto detect text files and perform LF normalization
-*.java          text diff=java
-*.js            text diff=java
-*.html          text diff=java
+*.html linguist-language=java
+*.js   linguist-language=java
+*.css  linguist-language=java
