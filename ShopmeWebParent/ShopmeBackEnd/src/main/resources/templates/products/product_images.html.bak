@@ -16,14 +16,14 @@
 				</div>
 			</div>
 			
-			<div class="col border m-3 p-2" id="divExtraImage0">
-				<div id="extraImageHeader0"><label>Extra Image #1:</label></div>
+			<div class="col border m-3 p-2">
+				<div><label>Extra Image #1:</label></div>
 				<div class="m-2">
 					<img id="extraThumbnail0" alt="Extra image #1 preview" class="img-fluid"
 						th:src="@{/images/image-thumbnail.png}" />
 				</div>
 				<div>
-					<input type="file" name="extraImage" 
+					<input type="file" name="extraImage1" 
 						accept="image/png, image/jpeg"  />
 				</div>
 			</div>
