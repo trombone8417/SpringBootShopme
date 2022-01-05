@@ -13,6 +13,11 @@ $(document)
 						}
 						showImageThumbnail(this);
 					})
+			$("a[name='linkRemoveExtraImage']").each(function(index){
+				$(this).click(function(){
+					removeExtraImage(index);
+				})
+			})
 		});
 
 function showImageThumbnail(fileInput) {

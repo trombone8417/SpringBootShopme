@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "product_images")
@@ -56,5 +57,8 @@ public class ProductImage {
 		this.product = product;
 	}
 	
-	
+	@Transient
+	public String getImagePath() {
+		return "/product-images/" + product.getId() + "/extras/" + this.name;
+	}
 }
