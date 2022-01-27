@@ -1,0 +1,4 @@
+chrome 無法使用 http (會導向https)
+chrome://net-internals/#hsts
+Delete domain security policies
+Domain: localhost (Delete)
