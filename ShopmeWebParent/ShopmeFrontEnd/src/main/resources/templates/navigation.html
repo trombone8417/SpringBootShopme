@@ -7,7 +7,7 @@
 		<a class="navbar-brand" th:href="@{/}">
 			<img th:src="@{/images/ShopmeAdminSmall.png}" />
 		</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar, #searchNavbar">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="topNavbar">
@@ -42,7 +42,7 @@
 				<form class="form-inline" th:action="@{/search}" method="get">
 					<input type="search" name="keyword" class="form-control mr-sm-2" 
 						placeholder="keyword" th:value="${keyword}" required />
-					<input type="submit" class="btn btn-outline-success" />
+					<input type="submit" value="Search" class="btn btn-outline-success" />
 				</form>
 			</div>
 		</nav>
