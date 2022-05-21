@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+	<head th:replace="fragments :: page_head('Settings - Shopme Admin', 'tag')" />
 	<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
 	<script th:src="@{/richtext/jquery.richtext.min.js}"></script>
 </head>
@@ -10,7 +10,11 @@
 	<div th:replace="navigation :: menu"></div>
 	<div>
 		<h2>Site Settings</h2>	
-	</div>
+	</div>		
+	
+		<div th:if="${message != null}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
 
 		<div>
 			<ul class="nav nav-tabs" id="settingTab" role="tablist">
@@ -34,7 +38,7 @@
 			<!-- Tab panes -->
 			<div class="tab-content">
 			  <div class="tab-pane active p-3" id="general" role="tabpanel">
-				<h2>General</h2>
+				<div th:replace="settings/general :: content" />
 			  </div>
 			  <div class="tab-pane" id="countries" role="tabpanel">
 				<h2>Countries</h2>
@@ -54,5 +58,9 @@
 	<div th:replace="fragments :: footer"></div>
 	
 </div>
+<script type="text/javascript">
+    MAX_FILE_SIZE = 102400;  // 100KB
+</script>
+<script th:src="@{/js/common_form.js}"></script>
 </body>
 </html>
