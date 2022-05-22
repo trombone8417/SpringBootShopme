@@ -38,7 +38,7 @@ public class SettingRepositoryTests {
 	public void testCreateCurrencySettings() {
 		Setting currencyId = new Setting("CURRENCY_ID", "1", SettingCategory.GENERAL);
 		Setting symbol = new Setting("CURRENCY_SYMBOL", "$", SettingCategory.GENERAL);
-		Setting symbolPosition = new Setting("CURRENCY_SYSBOL_POSITION", "before", SettingCategory.GENERAL);
+		Setting symbolPosition = new Setting("CURRENCY_SYMBOL_POSITION", "before", SettingCategory.GENERAL);
 		Setting decimalPointType = new Setting("DECIMAL_POINT_TYPE", "POINT", SettingCategory.GENERAL);
 		Setting decimalDigits = new Setting("DECIMAL_DIGITS", "2", SettingCategory.GENERAL);
 		Setting thousandsPointType = new Setting("THOUSANDS_POINT_TYPE", "COMMA", SettingCategory.GENERAL);
