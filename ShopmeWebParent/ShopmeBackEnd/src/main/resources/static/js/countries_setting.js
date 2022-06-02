@@ -48,10 +48,15 @@ function deleteCountry(){
 
     url = contextPath + "countries/delete/" + countryId;
 
-    $.get(url, function(responseJSON) {
-        $("#dropDownCountries option[value='" + optionValue + "']").remove();
-        changeFromStateToNew();
+    $.ajax({
+        type: "DELETE",
+        url: url,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(csrfHeaderName, csrfValue);
+        }
     }).done(function() {
+		$("#dropDownCountries option[value='" + optionValue + "']").remove();
+        changeFromStateToNew();
         showToastMessage("The country has been deleted");
     }).fail(function() {
         showToastMessage("ERROR: Could not connect to server or server encountered an error");
