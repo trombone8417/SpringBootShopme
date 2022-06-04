@@ -1,4 +1,4 @@
-package com.shopme;
+package com.shopme.customer;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
