@@ -188,6 +188,10 @@ public class Customer {
 		return "Customer [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
 	
+	public String getFullName() {
+		return firstName + " " + lastName;
+	}
+	
 }
 
 
