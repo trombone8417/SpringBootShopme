@@ -179,7 +179,7 @@ CREATE TABLE `customers` (
   UNIQUE KEY `UK_rfbvkrffamfql7cjmen8v976v` (`email`),
   KEY `FK7b7p2myt0y31l4nyj1p7sk0b1` (`country_id`),
   CONSTRAINT `FK7b7p2myt0y31l4nyj1p7sk0b1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +188,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-INSERT INTO `customers` VALUES (1,'1927  West Drive',NULL,'Sacramento','2022-06-04 22:35:14.000000','david.s.fountaine@gmail.com','','David','Stanfield','password123','312-462-7518','95867','California',NULL,234);
+INSERT INTO `customers` VALUES (1,'1927  West Drive',NULL,'Sacramento','2022-06-04 22:35:14.000000','david.s.fountaine@gmail.com','','David','Stanfield','password123','312-462-7518','95867','California',NULL,234),(6,'iiiiiiiiiiii','kkkkkkkkkk','yyy','2022-06-09 13:54:30.000000','test@gmail.com','','ff','gg','$2a$10$birn6K66bl/L1h6Yw7wUB.kpDQuTWMbNrYQD.yH6LQtfrbd7Jv5bO','00000000000','500','test',NULL,3);
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -342,7 +342,7 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES ('COPYRIGHT','GENERAL','Copyright (C) 2022 Shopme Ltd.'),('CURRENCY_ID','GENERAL','1'),('CURRENCY_SYMBOL','GENERAL','$'),('CURRENCY_SYMBOL_POSITION','GENERAL','Before price'),('CUSTOMER_VERIFY_CONTENT','MAIL_TEMPLATES','email content'),('CUSTOMER_VERIFY_SUBJECT','MAIL_TEMPLATES','Email subject'),('DECIMAL_DIGITS','GENERAL','2'),('DECIMAL_POINT_TYPE','GENERAL','POINT'),('MAIL_FROM','MAIL_SERVER','test@gmail.com'),('MAIL_HOST','MAIL_SERVER','smtp.gmail.com'),('MAIL_PASSWORD','MAIL_SERVER','test'),('MAIL_PORT','MAIL_SERVER','123'),('MAIL_SENDER_NAME','MAIL_SERVER','Shopme Team'),('MAIL_USERNAME','MAIL_SERVER','test'),('SITE_LOGO','GENERAL','/site-logo/cute_small.png'),('SITE_NAME','GENERAL','Shopme'),('SMTP_AUTH','MAIL_SERVER','true'),('SMTP_SECURED','MAIL_SERVER','true'),('THOUSANDS_POINT_TYPE','GENERAL','COMMA');
+INSERT INTO `settings` VALUES ('COPYRIGHT','GENERAL','Copyright (C) 2022 Shopme Ltd.'),('CURRENCY_ID','GENERAL','1'),('CURRENCY_SYMBOL','GENERAL','$'),('CURRENCY_SYMBOL_POSITION','GENERAL','Before price'),('CUSTOMER_VERIFY_CONTENT','MAIL_TEMPLATES','Dear [[name]],<div><br></div><div>Click the link below to verify your registration:</div><span style=\"font-size:16px;\"><br>\r\n<a href=\"[[url]]\" target=\"_self\">VERIFY</a><span style=\"font-size:18px;\"><span style=\"font-size:24px;\"><b><font color=\"#0000ff\"></font></b></span></span></span><a href=\"[[url]]\" target=\"_self\"></a><div><b><font color=\"#0000ff\"></font></b></div><div><br></div><div>Thank you,</div><div>The Shopme Team.</div>'),('CUSTOMER_VERIFY_SUBJECT','MAIL_TEMPLATES','Please verify your registration to continue shopping'),('DECIMAL_DIGITS','GENERAL','2'),('DECIMAL_POINT_TYPE','GENERAL','POINT'),('MAIL_FROM','MAIL_SERVER','test@gmail.com'),('MAIL_HOST','MAIL_SERVER','smtp.gmail.com'),('MAIL_PASSWORD','MAIL_SERVER','password'),('MAIL_PORT','MAIL_SERVER','587'),('MAIL_SENDER_NAME','MAIL_SERVER','Shopme Team'),('MAIL_USERNAME','MAIL_SERVER','test@gmail.com'),('SITE_LOGO','GENERAL','/site-logo/cute_small.png'),('SITE_NAME','GENERAL','Shopme'),('SMTP_AUTH','MAIL_SERVER','true'),('SMTP_SECURED','MAIL_SERVER','true'),('THOUSANDS_POINT_TYPE','GENERAL','COMMA');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -439,4 +439,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-07 20:41:44
+-- Dump completed on 2022-06-11  7:03:32
