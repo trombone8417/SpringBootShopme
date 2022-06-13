@@ -1,22 +1,14 @@
 package com.shopme.admin.product;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,26 +23,18 @@ import com.shopme.admin.security.ShopmeUserDetails;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.Product;
-import com.shopme.common.entity.ProductImage;
 import com.shopme.common.exception.ProductNotFoundException;
 
 @Controller
 public class ProductController {
-	
-	@Autowired
-	private ProductService productService;
-	
-	@Autowired
-	private BrandService brandService;
-	
-	@Autowired
-	private CategoryService categoryService;
+	@Autowired private ProductService productService;
+	@Autowired private BrandService brandService;
+	@Autowired private CategoryService categoryService;
 	
 	@GetMapping("/products")
 	public String listFirstPage(Model model) {
 		return listByPage(1, model, "name", "asc", null, 0);
 	}
-	
 	
 	@GetMapping("/products/page/{pageNum}")
 	public String listByPage(
@@ -72,8 +56,8 @@ public class ProductController {
 		
 		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 		
-		if (categoryId != null) model.addAttribute("categoryId", categoryId);
-		
+		if (categoryId != null) model.addAttribute("categoryId", categoryId); 
+			
 		model.addAttribute("currentPage", pageNum);
 		model.addAttribute("totalPages", page.getTotalPages());
 		model.addAttribute("startCount", startCount);
@@ -83,16 +67,16 @@ public class ProductController {
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("reverseSortDir", reverseSortDir);
 		model.addAttribute("keyword", keyword);		
-		model.addAttribute("listProducts", listProducts);	
-		model.addAttribute("listCategories", listCategories);
+		model.addAttribute("listProducts", listProducts);
+		model.addAttribute("listCategories", listCategories);		
 		
 		return "products/products";		
 	}
 	
-	
 	@GetMapping("/products/new")
 	public String newProduct(Model model) {
 		List<Brand> listBrands = brandService.listAll();
+		
 		Product product = new Product();
 		product.setEnabled(true);
 		product.setInStock(true);
@@ -106,8 +90,8 @@ public class ProductController {
 	}
 	
 	@PostMapping("/products/save")
-	public String saveProduct(Product product, RedirectAttributes ra, 
-			@RequestParam(value = "fileImage", required = false) MultipartFile mainImageMultipart,
+	public String saveProduct(Product product, RedirectAttributes ra,
+			@RequestParam(value = "fileImage", required = false) MultipartFile mainImageMultipart,			
 			@RequestParam(value = "extraImage", required = false) MultipartFile[] extraImageMultiparts,
 			@RequestParam(name = "detailIDs", required = false) String[] detailIDs,
 			@RequestParam(name = "detailNames", required = false) String[] detailNames,
@@ -115,34 +99,33 @@ public class ProductController {
 			@RequestParam(name = "imageIDs", required = false) String[] imageIDs,
 			@RequestParam(name = "imageNames", required = false) String[] imageNames,
 			@AuthenticationPrincipal ShopmeUserDetails loggedUser
-			) throws IOException {
+			) 
+					throws IOException {
 		if (loggedUser.hasRole("Salesperson")) {
 			productService.saveProductPrice(product);
-
-			ra.addFlashAttribute("message", "The product has been saved successfully.");
-			
-			return "redirect:/products";
+			ra.addFlashAttribute("message", "The product has been saved successfully.");			
+			return "redirect:/products";			
 		}
 		
 		ProductSaveHelper.setMainImageName(mainImageMultipart, product);
-		ProductSaveHelper.setExistingExtraImageNames(imageIDs,imageNames,product);
+		ProductSaveHelper.setExistingExtraImageNames(imageIDs, imageNames, product);
 		ProductSaveHelper.setNewExtraImageNames(extraImageMultiparts, product);
-		ProductSaveHelper.setProductDetails(detailIDs,detailNames, detailValues, product);
+		ProductSaveHelper.setProductDetails(detailIDs, detailNames, detailValues, product);
 			
 		Product savedProduct = productService.save(product);
+		
 		ProductSaveHelper.saveUploadedImages(mainImageMultipart, extraImageMultiparts, savedProduct);
-
-		ProductSaveHelper.deleteExtraImagesWereRemovedOnForm(product);
-
+		
+		ProductSaveHelper.deleteExtraImagesWeredRemovedOnForm(product);
+		
 		ra.addFlashAttribute("message", "The product has been saved successfully.");
 		
 		return "redirect:/products";
 	}
-	
-	
+
 	
 	@GetMapping("/products/{id}/enabled/{status}")
-	public String updateCategoryEnabledStatus(@PathVariable("id") Integer id,
+	public String updateProductEnabledStatus(@PathVariable("id") Integer id,
 			@PathVariable("status") boolean enabled, RedirectAttributes redirectAttributes) {
 		productService.updateProductEnabledStatus(id, enabled);
 		String status = enabled ? "enabled" : "disabled";
@@ -152,15 +135,15 @@ public class ProductController {
 		return "redirect:/products";
 	}
 	
-	
 	@GetMapping("/products/delete/{id}")
 	public String deleteProduct(@PathVariable(name = "id") Integer id, 
 			Model model,
 			RedirectAttributes redirectAttributes) {
 		try {
 			productService.delete(id);
-			String productExtraImagesDir = "../product-images/" + id + "/extras";	
-			String productImagesDir = "../product-images/" + id ;				
+			String productExtraImagesDir = "../product-images/" + id + "/extras";
+			String productImagesDir = "../product-images/" + id;
+			
 			FileUploadUtil.removeDir(productExtraImagesDir);
 			FileUploadUtil.removeDir(productImagesDir);
 			
@@ -171,7 +154,7 @@ public class ProductController {
 		}
 		
 		return "redirect:/products";
-	}	
+	}
 	
 	@GetMapping("/products/edit/{id}")
 	public String editProduct(@PathVariable("id") Integer id, Model model,
@@ -186,29 +169,29 @@ public class ProductController {
 			model.addAttribute("pageTitle", "Edit Product (ID: " + id + ")");
 			model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
 			
+			
 			return "products/product_form";
+			
 		} catch (ProductNotFoundException e) {
 			ra.addFlashAttribute("message", e.getMessage());
-
+			
 			return "redirect:/products";
 		}
 	}
-	
 	
 	@GetMapping("/products/detail/{id}")
 	public String viewProductDetails(@PathVariable("id") Integer id, Model model,
 			RedirectAttributes ra) {
 		try {
-			Product product = productService.get(id);
-			
-			model.addAttribute("product", product);
+			Product product = productService.get(id);			
+			model.addAttribute("product", product);		
 			
 			return "products/product_detail_modal";
+			
 		} catch (ProductNotFoundException e) {
 			ra.addFlashAttribute("message", e.getMessage());
-
+			
 			return "redirect:/products";
 		}
-	}
-
+	}	
 }

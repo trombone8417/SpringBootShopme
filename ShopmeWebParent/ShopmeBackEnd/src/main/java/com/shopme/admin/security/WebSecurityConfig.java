@@ -15,26 +15,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
 	@Bean
 	public UserDetailsService userDetailsService() {
 		return new ShopmeUserDetailsService();
 	}
 	
 	@Bean
-	public PasswordEncoder PasswordEncoder() {
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 		authProvider.setUserDetailsService(userDetailsService());
-		authProvider.setPasswordEncoder(PasswordEncoder());
+		authProvider.setPasswordEncoder(passwordEncoder());
 		
 		return authProvider;
 	}
 	
-	
-
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider());
@@ -43,30 +42,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/users/**", "/settings/**", "/countries/**", "/states/**").hasAuthority("Admin")
-		.antMatchers("/categories/**", "/brands/**").hasAnyAuthority("Admin", "Editor")
-		.antMatchers("/products/new", "/products/delete/**").hasAnyAuthority("Admin", "Editor")
-		.antMatchers("/products/edit/**", "/products/save", "/products/check_unique")
-			.hasAnyAuthority("Admin", "Editor", "Salesperson")
-		.antMatchers("/products", "/products/", "/products/detail/**", "/products/page/**")
-			.hasAnyAuthority("Admin", "Editor", "Salesperson", "Shipper")
-		.antMatchers("/products/**").hasAnyAuthority("Admin", "Editor")
-		.anyRequest()
-		.authenticated()
-		.and()
-		.formLogin()
-			.loginPage("/login")
-			.usernameParameter("email")
-			.permitAll()
-		.and().logout().permitAll()
-		.and()
-			.rememberMe()
-				.key("AbcDefgHijKlmnOpqrs_1234567890")
-				.tokenValiditySeconds(7 * 24 * 60 * 60);
+			.antMatchers("/users/**", "/settings/**", "/countries/**", "/states/**").hasAuthority("Admin")
+			.antMatchers("/categories/**", "/brands/**").hasAnyAuthority("Admin", "Editor")
+			
+			.antMatchers("/products/new", "/products/delete/**").hasAnyAuthority("Admin", "Editor")
+			
+			.antMatchers("/products/edit/**", "/products/save", "/products/check_unique")
+				.hasAnyAuthority("Admin", "Editor", "Salesperson")
+				
+			.antMatchers("/products", "/products/", "/products/detail/**", "/products/page/**")
+				.hasAnyAuthority("Admin", "Editor", "Salesperson", "Shipper")
+				
+			.antMatchers("/products/**").hasAnyAuthority("Admin", "Editor")
+			
+			.antMatchers("/customers/**").hasAnyAuthority("Admin", "Salesperson")
+			
+			.anyRequest().authenticated()
+			.and()
+			.formLogin()			
+				.loginPage("/login")
+				.usernameParameter("email")
+				.permitAll()
+			.and().logout().permitAll()
+			.and()
+				.rememberMe()
+					.key("AbcDefgHijKlmnOpqrs_1234567890")
+					.tokenValiditySeconds(7 * 24 * 60 * 60);
+					;
+			
 	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**");
 	}
+
+	
 }
