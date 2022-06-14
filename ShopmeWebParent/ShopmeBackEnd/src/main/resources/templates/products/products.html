@@ -9,10 +9,8 @@
 			<h2>Manage Products</h2>
 
 			<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
-			<a th:href="@{/products/new}"
-				class="fas fa-folder-plus fa-2x icon-dark mr-2"></a> <a
-				th:href="@{/products/export/csv}"
-				class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
+		<a th:href="@{/products/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+		<a th:href="@{/products/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
 			</th:block>
 
 		</div>
@@ -20,7 +18,7 @@
 		<div>
 			<form th:action="@{/products/page/1}" class="form-inline m-3" id="searchForm">
 				<input type="hidden" name="sortField" th:value="${sortField}" />
-				<input type="hidden" name="sortDir" th:value="sortDir" />
+			<input type="hidden" name="sortDir" th:value="${sortDir}" />
 
 				Category:&nbsp;
 				<select class="form-control" name="categoryId" id="dropdownCategory">
@@ -47,21 +45,21 @@
 		</div>
 
 		<div class="full-details">
-			<table
-				class="table table-bordered table-striped table-hover table-responsive-xl">
+		<table class="table table-bordered table-striped table-hover table-responsive-xl">
 				<thead class="thead-dark">
 					<tr>
 						<th class="hideable-column"> 
-							<th th:replace="fragments :: column_link('/products', 'id', 'ID', 'tag')" />
+					<th th:replace="fragments :: column_link('id', 'ID', 'tag')" />
 						</th>
 						<th>Main Image</th>
-						<th th:replace="fragments :: column_link('/products', 'name', 'Product Name', 'none')" />
+					<th th:replace="fragments :: column_link('name', 'Product Name', 'none')" />
+					
 						<th class="hideable-column"> 
-							<th th:replace="fragments :: column_link('/products', 'brand', 'Brand', 'tag')" />
+					<th th:replace="fragments :: column_link('brand', 'Brand', 'tag')" />
 							</th>
 							
 							<th class="hideable-column">
-							<th th:replace="fragments :: column_link('/products', 'category', 'Category', 'tag')" />
+					<th th:replace="fragments :: column_link('category', 'Category', 'tag')" />
 						</th>
 						<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
 							<th>Enabled</th>
@@ -95,10 +93,9 @@
 							></a>
 							<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
 							&nbsp;
-								<div
-									th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})" />
-								<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+						<div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})" />
 							</th:block>
+						<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
 							&nbsp;
 								<div th:replace="fragments :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)" />	
 							</th:block>					
@@ -147,7 +144,7 @@
 			</div>
 		</div>
 
-		<div th:replace="fragments :: pagination('/products', 'products')"></div>
+	<div th:replace="fragments :: pagination('products')"></div>
 
 		<div th:replace="fragments :: footer"></div>
 

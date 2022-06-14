@@ -68,7 +68,8 @@ public class ProductController {
 		model.addAttribute("reverseSortDir", reverseSortDir);
 		model.addAttribute("keyword", keyword);		
 		model.addAttribute("listProducts", listProducts);
-		model.addAttribute("listCategories", listCategories);		
+		model.addAttribute("listCategories", listCategories);	
+		model.addAttribute("moduleURL", "/products");	
 		
 		return "products/products";		
 	}
@@ -116,7 +117,7 @@ public class ProductController {
 		
 		ProductSaveHelper.saveUploadedImages(mainImageMultipart, extraImageMultiparts, savedProduct);
 		
-		ProductSaveHelper.deleteExtraImagesWeredRemovedOnForm(product);
+		ProductSaveHelper.deleteExtraImagesWereRemovedOnForm(product);
 		
 		ra.addFlashAttribute("message", "The product has been saved successfully.");
 		
