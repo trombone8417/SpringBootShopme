@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.FileUploadUtil;
+import com.shopme.admin.paging.PagingAndSortingHelper;
+import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.admin.user.UserNotFoundException;
 import com.shopme.admin.user.UserService;
 import com.shopme.admin.user.export.UserCsvExporter;
@@ -35,12 +37,16 @@ public class UserController {
 	private UserService service;
 	
 	@GetMapping("/users")
-	public String listFirstPage(Model model) {
-		return listByPage(1, model, "firstName","asc",null);
+	public String listFirstPage() {
+		return "redirect:/users/page/1?sortField=firstName&sortDir=asc";
 	}
 	
 	@GetMapping("/users/page/{pageNum}")
-	public String listByPage(@PathVariable(name="pageNum") int pageNum, Model model,@Param("sortField" ) String sortField, @Param("sortDir") String sortDir,@Param("keyword") String keyword) {
+	public String listByPage(@PagingAndSortingParam PagingAndSortingHelper helper,
+			@PathVariable(name="pageNum") int pageNum, Model model,
+			@Param("sortField" ) String sortField, 
+			@Param("sortDir") String sortDir,
+			@Param("keyword") String keyword) {
 		
 		System.out.println("Sort Field: " + sortField);
 		System.out.println("Sort Order: " + sortDir);
@@ -54,7 +60,6 @@ public class UserController {
 			endCount = page.getTotalElements();
 		}
 		
-		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 		
 		model.addAttribute("currentPage",pageNum);
 		model.addAttribute("totalPages",page.getTotalPages());
@@ -62,10 +67,6 @@ public class UserController {
 		model.addAttribute("endCount",endCount);
 		model.addAttribute("totalItems",page.getTotalElements());
 		model.addAttribute("listUsers",listUsers);
-		model.addAttribute("sortField",sortField);
-		model.addAttribute("sortDir",sortDir);
-		model.addAttribute("reverseSortDir",reverseSortDir);
-		model.addAttribute("keyword",keyword);
 		model.addAttribute("moduleURL","/users");
 		return "users/users";
 	}
