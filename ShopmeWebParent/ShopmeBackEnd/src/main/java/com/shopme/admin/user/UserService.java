@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 
@@ -39,16 +40,20 @@ public class UserService {
 		return (List<User>) userRepo.findAll(Sort.by("firstName").ascending());
 	}
 	
-	public Page<User> listByPage(int pageNum, String sortField, String sortDir, String keyword){
-		Sort sort = Sort.by(sortField);
-		sort = sortDir.equals("asc") ? sort.ascending():sort.descending();
-		Pageable pageable = PageRequest.of(pageNum-1, USERS_PER_PAGE, sort);
+	public void listByPage(int pageNum, PagingAndSortingHelper helper){
+		Sort sort = Sort.by(helper.getSortField());
+		sort = helper.getSortDir().equals("asc") ? sort.ascending():sort.descending();
 		
-		if(keyword != null) {
-			return userRepo.findAll(keyword,pageable);
+		Pageable pageable = PageRequest.of(pageNum-1, USERS_PER_PAGE, sort);
+		Page<User> page = null;
+		
+		if(helper.getKeyword() != null) {
+			page = userRepo.findAll(helper.getKeyword(), pageable);
+		} else {
+			page = userRepo.findAll(pageable);
 		}
 		
-		return userRepo.findAll(pageable);
+		helper.updateModelAttributes(pageNum, page);
 	}
 	
 	public List<Role> listRoles(){

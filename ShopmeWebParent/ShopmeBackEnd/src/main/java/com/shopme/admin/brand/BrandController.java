@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.category.CategoryService;
+import com.shopme.admin.paging.PagingAndSortingHelper;
+import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Category;
 
@@ -28,39 +30,16 @@ private BrandService brandService;
 	private CategoryService categoryService;
 	
 	@GetMapping("/brands")
-	public String listFirstPage(Model model) {
-		return listByPage(1, model, "name", "asc", null);
+	public String listFirstPage() {
+		return "redirect:/brands/page/1?sortField=name&sortDir=asc";
 	}
 	
 	@GetMapping("/brands/page/{pageNum}")
 	public String listByPage(
-			@PathVariable(name = "pageNum") int pageNum, Model model,
-			@Param("sortField") String sortField, @Param("sortDir") String sortDir,
-			@Param("keyword") String keyword
+			@PagingAndSortingParam(listName = "listBrands",moduleURL = "/brands") PagingAndSortingHelper helper,
+			@PathVariable(name = "pageNum") int pageNum
 			) {
-		Page<Brand> page = brandService.listByPage(pageNum, sortField, sortDir, keyword);
-		List<Brand> listBrands = page.getContent();
-		
-		long startCount = (pageNum - 1) * BrandService.BRANDS_PER_PAGE + 1;
-		long endCount = startCount + BrandService.BRANDS_PER_PAGE - 1;
-		if (endCount > page.getTotalElements()) {
-			endCount = page.getTotalElements();
-		}
-		
-		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
-		
-		model.addAttribute("currentPage", pageNum);
-		model.addAttribute("totalPages", page.getTotalPages());
-		model.addAttribute("startCount", startCount);
-		model.addAttribute("endCount", endCount);
-		model.addAttribute("totalItems", page.getTotalElements());
-		model.addAttribute("sortField", sortField);
-		model.addAttribute("sortDir", sortDir);
-		model.addAttribute("reverseSortDir", reverseSortDir);
-		model.addAttribute("keyword", keyword);		
-		model.addAttribute("listBrands", listBrands);
-		model.addAttribute("moduleURL", "/brands");
-		
+		brandService.listByPage(pageNum, helper);
 		
 		return "brands/brands";		
 	}
