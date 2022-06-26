@@ -13,12 +13,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.shopme.security.oauth.CustomerOAuth2UserService;
+import com.shopme.security.oauth.OAuth2LoginSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired private CustomerOAuth2UserService oAuth2UserService;
+	@Autowired private OAuth2LoginSuccessHandler oAuth2LoginHandler;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -40,7 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/login")
 				.userInfoEndpoint()
 				.userService(oAuth2UserService)
-			.and()
+				.and()
+				.successHandler(oAuth2LoginHandler)
 			.and()
 			.logout().permitAll()
 			.and()
