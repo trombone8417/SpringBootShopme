@@ -11,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import com.shopme.common.entity.AuthenticationType;
+import com.shopme.common.entity.Customer;
 import com.shopme.customer.CustomerService;
 
 @Component
@@ -25,8 +27,16 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 		
 		String name = oAuth2User.getName();
 		String email = oAuth2User.getEmail();
+		String countryCode = request.getLocale().getCountry();
 		
 		System.out.println("OAuth2LoginSuccessHandler: " + name + " | " + email);
+		
+		Customer customer = customerService.getCustomerByEmail(email);
+		if (customer == null) {
+			customerService.addNewCustomerUponOAuthLogin(name, email, countryCode);
+		}else {
+			customerService.updateAuthenticationType(customer, AuthenticationType.GOOGLE);			
+		}
 		
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
