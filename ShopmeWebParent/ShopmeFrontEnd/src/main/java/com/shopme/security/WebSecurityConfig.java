@@ -21,6 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired private CustomerOAuth2UserService oAuth2UserService;
 	@Autowired private OAuth2LoginSuccessHandler oAuth2LoginHandler;
+	@Autowired private DatabaseLoginSuccessHandler databaseLoginSuccessHandler;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -36,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.formLogin()
 				.loginPage("/login")
 				.usernameParameter("email")
+				.successHandler(databaseLoginSuccessHandler)
 				.permitAll()
 			.and()
 			.oauth2Login()
