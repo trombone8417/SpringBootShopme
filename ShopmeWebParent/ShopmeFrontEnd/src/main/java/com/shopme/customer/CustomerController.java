@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.shopme.Utility;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.Customer;
+import com.shopme.security.oauth.CustomerOAuth2User;
 import com.shopme.setting.EmailSettingBag;
 import com.shopme.setting.SettingService;
 
@@ -87,8 +91,32 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/account_details")
-	public String viewAccountDetails(Model model) {
+	public String viewAccountDetails(Model model, HttpServletRequest request) {
+		
+		String email = getEmailOfAuthenticationCustomer(request);
+		Customer customer = customerService.getCustomerByEmail(email);
+		List<Country> listCountries = customerService.listAllCountries();
+		
+		model.addAttribute("customer", customer);
+		model.addAttribute("listCountries", listCountries);
+		
 		return "customer/account_form";
+	}
+	
+	private String getEmailOfAuthenticationCustomer(HttpServletRequest request) {
+		Object principal = request.getUserPrincipal();
+		String customerEmail = null;
+		
+		if (principal instanceof UsernamePasswordAuthenticationToken
+				|| principal instanceof RememberMeAuthenticationToken) {
+			customerEmail = request.getUserPrincipal().getName();
+		} else if (principal instanceof OAuth2AuthenticationToken) {
+			OAuth2AuthenticationToken oAuth2Token = (OAuth2AuthenticationToken) principal;
+			CustomerOAuth2User oAuth2User = (CustomerOAuth2User) oAuth2Token.getPrincipal();
+			customerEmail = oAuth2User.getEmail();
+		}
+		
+		return customerEmail;
 	}
 }
 
