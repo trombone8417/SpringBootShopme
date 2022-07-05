@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 public class CustomerOAuth2User implements OAuth2User {
 	
 	private String clientName;
+	private String fullName;
 	private OAuth2User oauthUser;
 
 	public CustomerOAuth2User(OAuth2User user, String clientName) {
@@ -36,11 +37,25 @@ public class CustomerOAuth2User implements OAuth2User {
 	}
 
 	public String getFullName() {
-		return oauthUser.getAttribute("name");
+		return fullName != null ? fullName : oauthUser.getAttribute("name");
 	}
 
 	public String getClientName() {
 		return clientName;
 	}
 	
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
