@@ -4,9 +4,18 @@
 <body>
 <div class="container-fluid text-center">
 	<div th:replace="navigation :: header_menu"></div>
+	
+	<div>&nbsp;</div>
+	
+	<div th:if="${title != null}">
+		<h2>[[${title}]]</h2>
+	</div>
+	
 	<div th:if="${message != null}">
 		<h3>[[${message}]]</h3>
 	</div>
+	
+	<div>&nbsp;</div>
 	
 	<div th:replace="navigation :: footer_menu"></div>
 </div>	
