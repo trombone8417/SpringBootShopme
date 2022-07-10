@@ -143,6 +143,10 @@ public class CustomerService {
 		}
 		
 	}
+	
+	public Customer getByResetPasswordToken(String token) {
+		return customerRepo.findByResetPasswordToken(token);
+	}
 }
 
 
