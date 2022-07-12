@@ -52,4 +52,9 @@ public class CartItem {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "CartItem [id=" + id + ", customer=" + customer.getFullName() + ", product=" + product.getShortName() + ", quantity=" + quantity
+				+ "]";
+	}
 }
