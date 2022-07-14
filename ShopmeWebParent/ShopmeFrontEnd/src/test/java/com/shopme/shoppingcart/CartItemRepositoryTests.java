@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.test.annotation.Rollback;
 
 import com.shopme.common.entity.CartItem;
@@ -75,6 +77,42 @@ public class CartItemRepositoryTests {
 		assertThat(listItems.size()).isEqualTo(2);
 	}
 
+	@Test
+	public void testFindByCustomerAndProduct() {
+		Integer customerId = 1;
+		Integer productId = 1;
+		
+		CartItem item = repo.findByCustomerAndProduct(new Customer(customerId), new Product(productId));
+		
+		assertThat(item).isNotNull();
+		
+		System.out.println(item);
+	}
+	
+	@Test
+	public void testUpdateQuantity() {
+		Integer customerId = 1;
+		Integer productId = 1;
+		Integer quantity = 4;
+		
+		repo.updateQuantity(quantity, customerId, productId);
+		
+		CartItem item = repo.findByCustomerAndProduct(new Customer(customerId), new Product(productId));
+		
+		assertThat(item.getQuantity()).isEqualTo(4);
+	}
+	
+	@Test
+	public void testDeleteByCustomerAndProduct() {
+		Integer customerId = 10;
+		Integer productId = 10;
+		
+		repo.deleteByCustomerAndProduct(customerId, productId);
+		
+		CartItem item = repo.findByCustomerAndProduct(new Customer(customerId), new Product(productId));
+		
+		assertThat(item).isNull();
+	}
 }
 
 
