@@ -29,6 +29,8 @@ public class ShoppingCartRestController {
 			return updatedQuantity + " item(s) of this product were added to your shopping cart.";
 		} catch (CustomerNotFoundException e) {
 			return "You must login to add this product to cart.";
+		} catch (ShoppingCartException ex) {
+			return ex.getMessage();
 		}
 	}
 	
