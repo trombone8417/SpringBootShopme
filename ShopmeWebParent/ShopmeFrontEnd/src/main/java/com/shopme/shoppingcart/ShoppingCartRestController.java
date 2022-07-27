@@ -58,7 +58,7 @@ public class ShoppingCartRestController {
 		} 
 	}
 
-	@DeleteMapping("/cart/remove/{productid}")
+	@DeleteMapping("/cart/remove/{productId}")
 	public String removeProduct(@PathVariable("productId") Integer productId,
 			HttpServletRequest request) {
 		Customer customer;
