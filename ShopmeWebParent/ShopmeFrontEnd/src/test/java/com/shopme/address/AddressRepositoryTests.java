@@ -24,7 +24,7 @@ public class AddressRepositoryTests {
 	
 	@Test
 	public void testAddNew() {
-		Integer customerId = 5;
+		Integer customerId = 44;
 		Integer countryId = 234; // USA
 		
 		Address newAddress = new Address();
@@ -66,11 +66,12 @@ public class AddressRepositoryTests {
 	
 	@Test
 	public void testUpdate() {
-		Integer addressId = 1;
+		Integer addressId = 2;
 		String phoneNumber = "646-232-3932";
 		
 		Address address = repo.findById(addressId).get();
 		address.setPhoneNumber(phoneNumber);
+		address.setDefaultForShipping(true);
 
 		Address updatedAddress = repo.save(address);
 		assertThat(updatedAddress.getPhoneNumber()).isEqualTo(phoneNumber);

@@ -24,9 +24,18 @@ public class AddressController {
 	public String showAddressBook(Model model, HttpServletRequest request) {
 		Customer customer = getAuthenticatedCustomer(request);
 		List<Address> listAddresses = addressService.listAddressBook(customer);
+		
+		boolean usePrimaryAddressAsDefault = true;
+		for (Address address : listAddresses) {
+			if (address.isDefaultForShipping()) {
+				usePrimaryAddressAsDefault = false;
+				break;
+			}
+		}
 				
 		model.addAttribute("listAddresses" ,listAddresses);
 		model.addAttribute("customer",customer);
+		model.addAttribute("usePrimaryAddressAsDefault",usePrimaryAddressAsDefault);
 		
 		return "address_book/addresses";
 	}
