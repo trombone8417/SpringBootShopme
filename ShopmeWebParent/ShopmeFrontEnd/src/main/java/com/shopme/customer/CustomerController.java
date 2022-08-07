@@ -8,7 +8,6 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
@@ -30,7 +29,6 @@ import com.shopme.setting.SettingService;
 
 @Controller
 public class CustomerController {
-
 	@Autowired private CustomerService customerService;
 	@Autowired private SettingService settingService;
 	
@@ -53,10 +51,11 @@ public class CustomerController {
 		
 		model.addAttribute("pageTitle", "Registration Succeeded!");
 		
-		return "register/register_success";
+		return "/register/register_success";
 	}
 
-	private void sendVerificationEmail(HttpServletRequest request, Customer customer) throws UnsupportedEncodingException, MessagingException {
+	private void sendVerificationEmail(HttpServletRequest request, Customer customer) 
+			throws UnsupportedEncodingException, MessagingException {
 		EmailSettingBag emailSettings = settingService.getEmailSettings();
 		JavaMailSenderImpl mailSender = Utility.prepareMailSender(emailSettings);
 		
@@ -75,18 +74,18 @@ public class CustomerController {
 		
 		String verifyURL = Utility.getSiteURL(request) + "/verify?code=" + customer.getVerificationCode();
 		
-		content = content.replace("[[url]]", verifyURL);
+		content = content.replace("[[URL]]", verifyURL);
 		
 		helper.setText(content, true);
 		
 		mailSender.send(message);
 		
-		System.out.println("to Address " + toAddress);
+		System.out.println("to Address: " + toAddress);
 		System.out.println("Verify URL: " + verifyURL);
-	}
-
+	}	
+	
 	@GetMapping("/verify")
-	public String verifyAccount(@Param("code") String code, Model model) {
+	public String verifyAccount(String code, Model model) {
 		boolean verified = customerService.verify(code);
 		
 		return "register/" + (verified ? "verify_success" : "verify_fail");
@@ -94,7 +93,6 @@ public class CustomerController {
 	
 	@GetMapping("/account_details")
 	public String viewAccountDetails(Model model, HttpServletRequest request) {
-		
 		String email = Utility.getEmailOfAuthenticationCustomer(request);
 		Customer customer = customerService.getCustomerByEmail(email);
 		List<Country> listCountries = customerService.listAllCountries();
@@ -113,13 +111,20 @@ public class CustomerController {
 		
 		updateNameForAuthenticatedCustomer(customer, request);
 		
-		return "redirect:/account_details";
+		String redirectOption = request.getParameter("redirect");
+		String redirectURL = "redirect:/account_details";
+		
+		if ("address_book".equals(redirectOption)) {
+			redirectURL = "redirect:/address_book";
+		}
+		
+		return redirectURL;
 	}
 
 	private void updateNameForAuthenticatedCustomer(Customer customer, HttpServletRequest request) {
 		Object principal = request.getUserPrincipal();
 		
-		if (principal instanceof UsernamePasswordAuthenticationToken
+		if (principal instanceof UsernamePasswordAuthenticationToken 
 				|| principal instanceof RememberMeAuthenticationToken) {
 			CustomerUserDetails userDetails = getCustomerUserDetailsObject(principal);
 			Customer authenticatedCustomer = userDetails.getCustomer();
@@ -127,11 +132,11 @@ public class CustomerController {
 			authenticatedCustomer.setLastName(customer.getLastName());
 			
 		} else if (principal instanceof OAuth2AuthenticationToken) {
-			OAuth2AuthenticationToken oAuth2Token = (OAuth2AuthenticationToken) principal;
-			CustomerOAuth2User oAuth2User = (CustomerOAuth2User) oAuth2Token.getPrincipal();
+			OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) principal;
+			CustomerOAuth2User oauth2User = (CustomerOAuth2User) oauth2Token.getPrincipal();
 			String fullName = customer.getFirstName() + " " + customer.getLastName();
-			oAuth2User.setFullName(fullName);
-		}
+			oauth2User.setFullName(fullName);
+		}		
 	}
 	
 	private CustomerUserDetails getCustomerUserDetailsObject(Object principal) {
@@ -147,18 +152,3 @@ public class CustomerController {
 		return userDetails;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
