@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -72,7 +73,7 @@ public class Order {
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private Set<OrderDetail> orderDetails = new HashSet<>();
 
 	public Integer getId() {
