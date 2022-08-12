@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Date;
 import java.util.Optional;
 
-import org.apache.catalina.startup.ClassLoaderFactory.RepositoryType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import com.jayway.jsonpath.Option;
 import com.shopme.common.entity.Customer;
 import com.shopme.common.entity.Order;
 import com.shopme.common.entity.OrderDetail;
@@ -63,15 +61,15 @@ public class OrderRepositoryTests {
 		mainOrder.getOrderDetails().add(orderDetail);
 		
 		Order savedOrder = repo.save(mainOrder);
-		assertThat(savedOrder.getId()).isGreaterThan(0);
 		
+		assertThat(savedOrder.getId()).isGreaterThan(0);		
 	}
 	
 	@Test
 	public void testCreateNewOrderWithMultipleProducts() {
-		Customer customer = entityManager.find(Customer.class, 2);
-		Product product1 = entityManager.find(Product.class, 3);
-		Product product2 = entityManager.find(Product.class, 5);
+		Customer customer = entityManager.find(Customer.class, 10);
+		Product product1 = entityManager.find(Product.class, 20);
+		Product product2 = entityManager.find(Product.class, 40);
 		
 		Order mainOrder = new Order();
 		mainOrder.setOrderTime(new Date());
@@ -87,7 +85,6 @@ public class OrderRepositoryTests {
 		orderDetail1.setSubtotal(product1.getPrice());
 		orderDetail1.setUnitPrice(product1.getPrice());
 		
-
 		OrderDetail orderDetail2 = new OrderDetail();
 		orderDetail2.setProduct(product2);
 		orderDetail2.setOrder(mainOrder);
@@ -96,10 +93,10 @@ public class OrderRepositoryTests {
 		orderDetail2.setQuantity(2);
 		orderDetail2.setSubtotal(product2.getPrice() * 2);
 		orderDetail2.setUnitPrice(product2.getPrice());
-
+		
 		mainOrder.getOrderDetails().add(orderDetail1);
 		mainOrder.getOrderDetails().add(orderDetail2);
-
+		
 		mainOrder.setShippingCost(30);
 		mainOrder.setProductCost(product1.getCost() + product2.getCost());
 		mainOrder.setTax(0);
@@ -107,13 +104,13 @@ public class OrderRepositoryTests {
 		mainOrder.setSubtotal(subtotal);
 		mainOrder.setTotal(subtotal + 30);
 		
-		mainOrder.setPaymentMethod(PaymentMethod.COD);
-		mainOrder.setStatus(OrderStatus.PROCESSING);
+		mainOrder.setPaymentMethod(PaymentMethod.CREDIT_CARD);
+		mainOrder.setStatus(OrderStatus.PACKAGED);
 		mainOrder.setDeliverDate(new Date());
 		mainOrder.setDeliverDays(3);
-
-		Order savedOrder = repo.save(mainOrder);
-		assertThat(savedOrder.getId()).isGreaterThan(0);
+		
+		Order savedOrder = repo.save(mainOrder);		
+		assertThat(savedOrder.getId()).isGreaterThan(0);		
 	}
 	
 	@Test
@@ -142,7 +139,7 @@ public class OrderRepositoryTests {
 	
 	@Test
 	public void testGetOrder() {
-		Integer orderId = 2;
+		Integer orderId = 3;
 		Order order = repo.findById(orderId).get();
 		
 		assertThat(order).isNotNull();
@@ -151,21 +148,10 @@ public class OrderRepositoryTests {
 	
 	@Test
 	public void testDeleteOrder() {
-		Integer orderId = 2;
+		Integer orderId = 3;
 		repo.deleteById(orderId);
 		
 		Optional<Order> result = repo.findById(orderId);
 		assertThat(result).isNotPresent();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-

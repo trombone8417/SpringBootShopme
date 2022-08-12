@@ -13,7 +13,7 @@ import com.shopme.common.entity.SettingCategory;
 public class SettingService {
 	@Autowired private SettingRepository repo;
 	
-	public List<Setting> listAllSettings(){
+	public List<Setting> listAllSettings() {
 		return (List<Setting>) repo.findAll();
 	}
 	
@@ -33,11 +33,15 @@ public class SettingService {
 		repo.saveAll(settings);
 	}
 	
-	public List<Setting> getMailServerSettings(){
+	public List<Setting> getMailServerSettings() {
 		return repo.findByCategory(SettingCategory.MAIL_SERVER);
 	}
-
-	public List<Setting> getMailTemplateSettings(){
+	
+	public List<Setting> getMailTemplateSettings() {
 		return repo.findByCategory(SettingCategory.MAIL_TEMPLATES);
+	}	
+	
+	public List<Setting> getCurrencySettings() {
+		return repo.findByCategory(SettingCategory.CURRENCY);
 	}
 }

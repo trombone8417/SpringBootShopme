@@ -16,11 +16,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "orders")
 public class Order {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -261,7 +261,7 @@ public class Order {
 		setCity(customer.getCity());
 		setCountry(customer.getCountry().getName());
 		setPostalCode(customer.getPostalCode());
-		setState(customer.getState());
+		setState(customer.getState());		
 	}
 
 	@Override
@@ -269,16 +269,13 @@ public class Order {
 		return "Order [id=" + id + ", subtotal=" + subtotal + ", paymentMethod=" + paymentMethod + ", status=" + status
 				+ ", customer=" + customer.getFullName() + "]";
 	}
+	
+	@Transient
+	public String getDestination() {
+		String destination =  city + ", ";
+		if (state != null && !state.isEmpty()) destination += state + ", ";
+		destination += country;
+		
+		return destination;
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
