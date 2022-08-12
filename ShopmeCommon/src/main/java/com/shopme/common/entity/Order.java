@@ -252,7 +252,23 @@ public class Order {
 		this.orderDetails = orderDetails;
 	}
 	
-	
+	public void copyAddressFromCustomer() {
+		setFirstName(customer.getFirstName());
+		setLastName(customer.getLastName());
+		setPhoneNumber(customer.getPhoneNumber());
+		setAddressLine1(customer.getAddressLine1());
+		setAddressLine2(customer.getAddressLine2());
+		setCity(customer.getCity());
+		setCountry(customer.getCountry().getName());
+		setPostalCode(customer.getPostalCode());
+		setState(customer.getState());
+	}
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", subtotal=" + subtotal + ", paymentMethod=" + paymentMethod + ", status=" + status
+				+ ", customer=" + customer.getFullName() + "]";
+	}
 }
 
 
