@@ -1,4 +1,4 @@
-package com.shopme.common.entity;
+package com.shopme.common.entity.order;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.shopme.common.entity.Customer;
 
 @Entity
 @Table(name = "orders")

@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.common.entity.Brand;
-import com.shopme.common.entity.Product;
+import com.shopme.common.entity.product.Product;
 import com.shopme.common.exception.ProductNotFoundException;
 
 @Service

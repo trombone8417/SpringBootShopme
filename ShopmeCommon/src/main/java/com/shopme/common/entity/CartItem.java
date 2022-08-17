@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.transaction.Transactional;
 
+import com.shopme.common.entity.product.Product;
+
 @Entity
 @Table(name = "cart_items")
 public class CartItem {

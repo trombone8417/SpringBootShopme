@@ -1,4 +1,4 @@
-package com.shopme.common.entity;
+package com.shopme.common.entity.product;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +18,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.shopme.common.entity.Brand;
+import com.shopme.common.entity.Category;
 
 
 @Entity
