@@ -19,13 +19,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.shopme.common.entity.Customer;
+import com.shopme.common.entity.IdBasedEntity;
 
 @Entity
 @Table(name = "orders")
-public class Order {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class Order extends IdBasedEntity {
 	
 	@Column(name = "first_name", nullable = false, length = 45)
 	private String firstName;
@@ -77,14 +75,6 @@ public class Order {
 	
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private Set<OrderDetail> orderDetails = new HashSet<>();
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getFirstName() {
 		return firstName;

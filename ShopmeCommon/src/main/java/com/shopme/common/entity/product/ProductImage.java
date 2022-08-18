@@ -10,13 +10,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.shopme.common.entity.IdBasedEntity;
+
 @Entity
 @Table(name = "product_images")
-public class ProductImage {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class ProductImage extends IdBasedEntity {
 	
 	@Column(nullable = false)
 	private String name;
@@ -37,14 +35,6 @@ public class ProductImage {
 	public ProductImage(String name, Product product) {
 		this.name = name;
 		this.product = product;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getName() {

@@ -16,10 +16,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "customers")
-public class Customer {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class Customer extends IdBasedEntity {
 	
 	@Column(nullable = false, unique = true, length = 45)
 	private String email;
@@ -74,14 +71,6 @@ public class Customer {
 	}
 
 	public Customer(Integer id) {
-		this.id = id;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
 		this.id = id;
 	}
 
