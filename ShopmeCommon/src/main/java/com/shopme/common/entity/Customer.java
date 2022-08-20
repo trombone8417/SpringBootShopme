@@ -16,7 +16,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "customers")
-public class Customer extends AbstractAddress {
+public class Customer extends AbstractAddressWithCountry {
 	
 	@Column(nullable = false, unique = true, length = 45)
 	private String email;
@@ -31,10 +31,6 @@ public class Customer extends AbstractAddress {
 	
 	@Column(name = "created_time")
 	private Date createdTime;
-	
-	@ManyToOne
-	@JoinColumn(name = "country_id")
-	private Country country;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "authentication_type", length = 10)
@@ -90,26 +86,12 @@ public class Customer extends AbstractAddress {
 		this.createdTime = createdTime;
 	}
 
-	public Country getCountry() {
-		return country;
-	}
-
-	public void setCountry(Country country) {
-		this.country = country;
-	}
-	
-
 	public AuthenticationType getAuthenticationType() {
 		return authenticationType;
 	}
 
 	public void setAuthenticationType(AuthenticationType authenticationType) {
 		this.authenticationType = authenticationType;
-	}
-
-	@Override
-	public String toString() {
-		return "Customer [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
 	
 	public String getFullName() {
@@ -122,28 +104,6 @@ public class Customer extends AbstractAddress {
 
 	public void setResetPasswordToken(String resetPasswordToken) {
 		this.resetPasswordToken = resetPasswordToken;
-	}
-	
-	@Transient
-	public String getAddress() {
-		String address = firstName;
-		
-		if (lastName != null && !lastName.isEmpty()) address += " " + lastName;
-		
-		if (!addressLine1.isEmpty()) address += ", " + addressLine1;
-		
-		if (addressLine2 != null && !addressLine2.isEmpty()) address += ", " + addressLine2;
-		
-		if (!city.isEmpty()) address += ", " + city;
-		
-		if (state != null && !state.isEmpty()) address += ", " + state;
-		
-		address += ", " + country.getName();
-		
-		if (!postalCode.isEmpty()) address += ". Postal Code: " + postalCode;
-		if (!phoneNumber.isEmpty()) address += ". Phone Number: " + phoneNumber;
-		
-		return address;
 	}
 	
 }
