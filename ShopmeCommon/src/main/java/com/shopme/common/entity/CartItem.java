@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.transaction.Transactional;
 
 import com.shopme.common.entity.product.Product;
@@ -25,7 +26,10 @@ public class CartItem {
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+	
 	private int quantity;
+	
+	private float shippingCost;
 	
 	public CartItem() {
 	}
@@ -60,10 +64,21 @@ public class CartItem {
 				+ "]";
 	}
 	
-	@Transactional
+	@Transient
 	public float getSubtotal() {
 		return product.getDiscountPrice() * quantity;
 	}
+	
+	@Transient
+	public float getShippingCost() {
+		return shippingCost;
+	}
+	
+	public void setShippingCost(float shippingCost) {
+		this.shippingCost = shippingCost;
+	}
+	
+	
 }
 
 

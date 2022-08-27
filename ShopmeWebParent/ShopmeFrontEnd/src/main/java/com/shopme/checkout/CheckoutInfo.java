@@ -46,9 +46,7 @@ public class CheckoutInfo {
 		calendar.add(Calendar.DATE, deliverDays);
 		return calendar.getTime();
 	}
-	public void setDeliverDate(Date deliverDate) {
-		this.deliverDate = deliverDate;
-	}
+	
 	public boolean isCodSupported() {
 		return codSupported;
 	}
