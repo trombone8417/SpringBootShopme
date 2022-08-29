@@ -29,6 +29,7 @@ public class CartItem {
 	
 	private int quantity;
 	
+	@Transient
 	private float shippingCost;
 	
 	public CartItem() {
