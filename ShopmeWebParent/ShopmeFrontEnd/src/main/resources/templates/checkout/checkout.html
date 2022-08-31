@@ -16,6 +16,16 @@
 					<h5>Shipping information</h5>
 				</div>
 				<div class="card-body">
+					<p>
+						<b>Ship to:</b>&nbsp; [[${shippingAddress}]]
+						<a th:href="@{/address_book}">[Ship to another address]</a>
+					</p>
+					<p>
+						<b>Days to deliver: </b>[[${checkoutInfo.deliverDays}]] day(s)
+					</p>
+					<p>
+						<b>Expected deliver date: </b>[[${#dates.format(checkoutInfo.deliverDate, 'yyyy/MM/dd (E)')}]]
+					</p>
 				</div>
 			</div>
 			<div class="card">
@@ -23,6 +33,11 @@
 					<h5>Payment Method</h5>
 				</div>
 				<div class="card-body">
+					<div th:if="${checkoutInfo.codSupported}">
+						<input type="radio" /> Cash on Delivery (COD)
+						&nbsp;
+						<button class="btn btn-primary">Place Order with COD</button>
+					</div>
 				</div>
 			</div>
 		</div>
