@@ -22,7 +22,7 @@ import com.shopme.common.entity.setting.Setting;
 
 @Controller
 public class SettingController {
-	
+
 	@Autowired private SettingService service;
 	
 	@Autowired private CurrencyRepository currencyRepo;
@@ -40,7 +40,7 @@ public class SettingController {
 		
 		return "settings/settings";
 	}
-
+	
 	@PostMapping("/settings/save_general")
 	public String saveGeneralSettings(@RequestParam("fileImage") MultipartFile multipartFile,
 			HttpServletRequest request, RedirectAttributes ra) throws IOException {
@@ -57,7 +57,7 @@ public class SettingController {
 	}
 
 	private void saveSiteLogo(MultipartFile multipartFile, GeneralSettingBag settingBag) throws IOException {
-		if(!multipartFile.isEmpty()) {
+		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			String value = "/site-logo/" + fileName;
 			settingBag.updateSiteLogo(value);
@@ -79,7 +79,7 @@ public class SettingController {
 	}
 	
 	private void updateSettingValuesFromForm(HttpServletRequest request, List<Setting> listSettings) {
-		for(Setting setting : listSettings) {
+		for (Setting setting : listSettings) {
 			String value = request.getParameter(setting.getKey());
 			if (value != null) {
 				setting.setValue(value);
@@ -90,22 +90,32 @@ public class SettingController {
 	}
 	
 	@PostMapping("/settings/save_mail_server")
-	public String saveMailServerSettings(HttpServletRequest request, RedirectAttributes ra) {
+	public String saveMailServerSetttings(HttpServletRequest request, RedirectAttributes ra) {
 		List<Setting> mailServerSettings = service.getMailServerSettings();
 		updateSettingValuesFromForm(request, mailServerSettings);
 		
 		ra.addFlashAttribute("message", "Mail server settings have been saved");
 		
-		return "redirect:/settings";
+		return "redirect:/settings#mailServer";
 	}
 	
 	@PostMapping("/settings/save_mail_templates")
-	public String saveMailTemplateSettings(HttpServletRequest request, RedirectAttributes ra) {
+	public String saveMailTemplateSetttings(HttpServletRequest request, RedirectAttributes ra) {
 		List<Setting> mailTemplateSettings = service.getMailTemplateSettings();
 		updateSettingValuesFromForm(request, mailTemplateSettings);
 		
 		ra.addFlashAttribute("message", "Mail template settings have been saved");
 		
-		return "redirect:/settings";
+		return "redirect:/settings#mailTemplates";
 	}
+	
+	@PostMapping("/settings/save_payment")
+	public String savePaymentSetttings(HttpServletRequest request, RedirectAttributes ra) {
+		List<Setting> paymentSettings = service.getPaymentSettings();
+		updateSettingValuesFromForm(request, paymentSettings);
+		
+		ra.addFlashAttribute("message", "Payment settings have been saved");
+		
+		return "redirect:/settings#payment";
+	}		
 }
