@@ -106,7 +106,55 @@
 	})
 	
 	paypal.Buttons({
+		createOrder: function(data, actions){
+			//setup a transaction
+			return actions.order.create({
+				intent: 'CAPTURE', // make payment immediately
+				payer: {
+					name: {
+						given_name: "[[${customer.firstName}]]",
+						surname: "[[${customer.lastName}]]"
+					},
+					
+					address: {
+						address_line_1: "[[${customer.addressLine1}]]",
+						address_line_2: "[[${customer.addressLine2}]]",
+						admin_area_1: "[[${customer.state}]]",
+						admin_area_2: "[[${customer.city}]]",
+						postal_code: "[[${customer.postalCode}]]",
+						country_code: "[[${customer.country.code}]]"
+					},
+					
+					email_address: "[[${customer.email}]]",
+					
+					phone: {
+						phone_type: "MOBILE",
+						phone_number: {
+							national_number: "[[${customer.phoneNumber}]]"
+						}
+					}
+				},
+				
+				purchase_units: [{
+					amount: {
+						value: "[[${checkoutInfo.paymentTotal4PayPal}]]",
+						currency_code: "[[${currencyCode}]]"
+					}
+				}]
+			})
+		},
 		
+		onApprove: function(data, actions){
+			// buyer approved payment
+		},
+		
+		onCancel: function(data){
+			// buyer cancelled payment
+		},
+		
+		onError: function(err){
+			// error that prevents buyer from doing checkout
+		}
 	}).render("#paypal-button-container")
 	
 </script>
