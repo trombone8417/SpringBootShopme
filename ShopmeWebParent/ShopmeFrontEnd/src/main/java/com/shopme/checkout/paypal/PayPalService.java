@@ -22,8 +22,6 @@ public class PayPalService {
 	
 	@Autowired private SettingService settingService;
 	
-	@Autowired private RestTemplate restTemplate;
-	
 	public boolean validateOrder(String orderId) throws PayPalApiException {
 		PayPalOrderResponse orderResponse = getOrderDetails(orderId);
 		
