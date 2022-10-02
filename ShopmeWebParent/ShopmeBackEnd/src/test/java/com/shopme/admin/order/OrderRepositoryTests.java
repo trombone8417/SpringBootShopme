@@ -159,7 +159,7 @@ public class OrderRepositoryTests {
 	
 	@Test
 	public void testUpdateOrderTracks() {
-		Integer orderId = 5;
+		Integer orderId = 7;
 		Order order = repo.findById(orderId).get();
 		
 		OrderTrack newTrack = new OrderTrack();
@@ -167,9 +167,16 @@ public class OrderRepositoryTests {
 		newTrack.setUpdatedTime(new Date());
 		newTrack.setStatus(OrderStatus.NEW);
 		newTrack.setNotes(OrderStatus.NEW.defaultDescription());
+
+		OrderTrack processingTrack = new OrderTrack();
+		processingTrack.setOrder(order);
+		processingTrack.setUpdatedTime(new Date());
+		processingTrack.setStatus(OrderStatus.PROCESSING);
+		processingTrack.setNotes(OrderStatus.PROCESSING.defaultDescription());
 		
 		List<OrderTrack> orderTracks = order.getOrderTracks();
 		orderTracks.add(newTrack);
+		orderTracks.add(processingTrack);
 		
 		Order updatedOrder = repo.save(order);
 		
