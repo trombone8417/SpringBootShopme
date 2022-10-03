@@ -46,7 +46,7 @@ public class OrderService {
 		if (address == null) {
 			newOrder.copyAddressFromCustomer();
 		} else {
-			newOrder.copyShoppingAddress(address);
+			newOrder.copyShippingAddress(address);
 		}
 		
 		Set<OrderDetail> orderDetails = newOrder.getOrderDetails();

@@ -11,19 +11,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.shopme.common.entity.AbstractAddress;
 import com.shopme.common.entity.Address;
 import com.shopme.common.entity.Customer;
-import com.shopme.common.entity.IdBasedEntity;
 
 @Entity
 @Table(name = "orders")
@@ -57,7 +54,8 @@ public class Order extends AbstractAddress {
 	private Set<OrderDetail> orderDetails = new HashSet<>();
 	
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-	private List<OrderTrack> orderTracks = new ArrayList<>(); 
+	@OrderBy("updatedTime ASC")
+	private List<OrderTrack> orderTracks = new ArrayList<>();
 
 	public String getCountry() {
 		return country;
@@ -163,14 +161,6 @@ public class Order extends AbstractAddress {
 		this.orderDetails = orderDetails;
 	}
 	
-	public List<OrderTrack> getOrderTracks() {
-		return orderTracks;
-	}
-
-	public void setOrderTracks(List<OrderTrack> orderTracks) {
-		this.orderTracks = orderTracks;
-	}
-
 	public void copyAddressFromCustomer() {
 		setFirstName(customer.getFirstName());
 		setLastName(customer.getLastName());
@@ -198,7 +188,7 @@ public class Order extends AbstractAddress {
 		return destination;
 	}
 
-	public void copyShoppingAddress(Address address) {
+	public void copyShippingAddress(Address address) {
 		setFirstName(address.getFirstName());
 		setLastName(address.getLastName());
 		setPhoneNumber(address.getPhoneNumber());
@@ -207,7 +197,7 @@ public class Order extends AbstractAddress {
 		setCity(address.getCity());
 		setCountry(address.getCountry().getName());
 		setPostalCode(address.getPostalCode());
-		setState(address.getState());	
+		setState(address.getState());			
 	}
 	
 	@Transient
@@ -231,4 +221,14 @@ public class Order extends AbstractAddress {
 		
 		return address;
 	}
+
+	public List<OrderTrack> getOrderTracks() {
+		return orderTracks;
+	}
+
+	public void setOrderTracks(List<OrderTrack> orderTracks) {
+		this.orderTracks = orderTracks;
+	}
+	
+	
 }
