@@ -37,11 +37,21 @@ function getShippingCost(productId) {
         data: params
         
     }).done(function(shippingCost) {
-        alert("Shipping cost = " + shippingCost);
+        getProductInfo(productId);
     }).fail(function(err) {
         showWarningModal(err.responseJSON.message);
+        getProductInfo(productId);
     }).always(function(){
 		$("#addProductModal").modal("hide");
+	});
+}
+
+function getProductInfo(productId) {
+	requestURL = contextPath + "products/get/" + productId;
+	$.get(requestURL, function(productJson){
+		console.log(productJson);
+	}).fail(function(err){
+		showWarningModal(err.responseJSON.message);
 	});
 }
 
