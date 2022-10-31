@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.paging.PagingAndSortingHelper;
@@ -99,4 +100,38 @@ public class OrderController {
 		
 	}	
 	
+	@PostMapping("/order/save")
+	public String saveOrder(Order order, HttpServletRequest request, RedirectAttributes ra) {
+	    String countryName = request.getParameter("countryName");
+	    order.setCountry(countryName);
+	    
+	    System.out.println("Country: " + order.getCountry());
+	    System.out.println("Total: " + order.getTotal());	    
+	    
+	    orderService.save(order);
+	    
+	    ra.addFlashAttribute("message", "The order ID " + order.getId() + " has been updated successfully");
+	    
+	    return defaultRedirectURL;
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
