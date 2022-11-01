@@ -1,6 +1,7 @@
 package com.shopme.admin.order;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +18,8 @@ import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.admin.setting.SettingService;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.order.Order;
+import com.shopme.common.entity.order.OrderDetail;
+import com.shopme.common.entity.product.Product;
 import com.shopme.common.entity.setting.Setting;
 
 @Controller
@@ -105,8 +108,7 @@ public class OrderController {
 	    String countryName = request.getParameter("countryName");
 	    order.setCountry(countryName);
 	    
-	    System.out.println("Country: " + order.getCountry());
-	    System.out.println("Total: " + order.getTotal());	    
+	    updateProductDetails(order, request);	    
 	    
 	    orderService.save(order);
 	    
@@ -114,6 +116,44 @@ public class OrderController {
 	    
 	    return defaultRedirectURL;
 	}
+
+    private void updateProductDetails(Order order, HttpServletRequest request) {
+        String[] detailIds = request.getParameterValues("detailId");
+        String[] productIds = request.getParameterValues("productId");
+        String[] productCosts = request.getParameterValues("productCost");
+        String[] productPrices = request.getParameterValues("productPrice");
+        String[] quantities = request.getParameterValues("quantity");
+        String[] productSubtotals = request.getParameterValues("productSubtotal");
+        String[] productShipCost = request.getParameterValues("productShipCost");
+        
+        Set<OrderDetail> orderDetails = order.getOrderDetails();
+    
+        for (int i = 0; i < detailIds.length; i++) {
+            System.out.println("Detail ID: " + detailIds[i]);
+            System.out.println("\t Product ID: " + productIds[i]);
+            System.out.println("\t Cost: " + productCosts[i]);
+            System.out.println("\t Quantity: " + quantities[i]);
+            System.out.println("\t Subtotal: " + productSubtotals[i]);
+            System.out.println("\t Ship cost: " + productShipCost[i]);
+            
+            OrderDetail orderDetail = new OrderDetail();
+            Integer detailId = Integer.parseInt(detailIds[i]);
+            if (detailId > 0) {
+                orderDetail.setId(detailId);
+            }
+            
+            orderDetail.setOrder(order);
+            orderDetail.setProduct(new Product(Integer.parseInt(productIds[i])));
+            orderDetail.setProductCost(Float.parseFloat(productCosts[i]));
+            orderDetail.setSubtotal(Float.parseFloat(productSubtotals[i]));
+            orderDetail.setShippingCost(Float.parseFloat(productShipCost[i]));
+            orderDetail.setQuantity(Integer.parseInt(quantities[i]));
+            orderDetail.setUnitPrice(Float.parseFloat(productPrices[i]));
+            
+            orderDetails.add(orderDetail);
+        }
+    
+    }
 	
 }
 
