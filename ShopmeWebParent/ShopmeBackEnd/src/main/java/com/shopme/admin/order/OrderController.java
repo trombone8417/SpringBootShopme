@@ -1,5 +1,8 @@
 package com.shopme.admin.order;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +22,8 @@ import com.shopme.admin.setting.SettingService;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.order.Order;
 import com.shopme.common.entity.order.OrderDetail;
+import com.shopme.common.entity.order.OrderStatus;
+import com.shopme.common.entity.order.OrderTrack;
 import com.shopme.common.entity.product.Product;
 import com.shopme.common.entity.setting.Setting;
 
@@ -108,7 +113,8 @@ public class OrderController {
 	    String countryName = request.getParameter("countryName");
 	    order.setCountry(countryName);
 	    
-	    updateProductDetails(order, request);	    
+	    updateProductDetails(order, request);	
+	    updateOrderTracks(order, request);
 	    
 	    orderService.save(order);
 	    
@@ -116,6 +122,38 @@ public class OrderController {
 	    
 	    return defaultRedirectURL;
 	}
+
+    private void updateOrderTracks(Order order, HttpServletRequest request) {
+        String[] trackIds = request.getParameterValues("trackId"); 
+        String[] trackStatuses = request.getParameterValues("trackStatus"); 
+        String[] trackDates = request.getParameterValues("trackDate"); 
+        String[] trackNotes = request.getParameterValues("trackNotes"); 
+        
+        List<OrderTrack> orderTracks = order.getOrderTracks();
+        
+        for (int i = 0; i < trackIds.length; i++) {
+            OrderTrack trackRecord = new OrderTrack();
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+            
+            Integer trackId = Integer.parseInt(trackIds[i]);
+            if (trackId > 0) {
+                trackRecord.setId(trackId);
+            }
+            
+            trackRecord.setOrder(order);
+            trackRecord.setStatus(OrderStatus.valueOf(trackStatuses[i]));
+            trackRecord.setNotes(trackNotes[i]);
+            
+            try {
+                trackRecord.setUpdatedTime(dateFormatter.parse(trackDates[i]));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            
+            orderTracks.add(trackRecord);
+        }
+        
+    }
 
     private void updateProductDetails(Order order, HttpServletRequest request) {
         String[] detailIds = request.getParameterValues("detailId");
