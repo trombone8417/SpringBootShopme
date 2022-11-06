@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Orders - Shopme Admin', 'none')" />
+<body>
+<div class="container-fluid">
+	<div th:replace="navigation :: menu"></div>
+	<div>
+		<h2>Manage Orders (Shipper)</h2>	
+	</div>
+		
+	<div th:replace="fragments :: search_form_and_message" />
+	
+	<div>
+		<th:block th:each="order : ${listOrders}">
+		<div class="row m-1">
+			<div class="card">
+				<div class="card-header">
+					<div class="row">
+						<div class="col">
+							<span>Order ID #[[${order.id}]]</span>
+						</div>
+						<div class="col">
+							<div class="float-right">
+								<a class="fas fa-file-alt fa-2x icon-green linkOrderDetail"
+								th:href="@{'/orders/detail/' + ${order.id}}"
+								title="View details of this order"
+								></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card-body">
+					
+				</div>
+			</div>
+		</div>
+		<div>&nbsp;</div>
+		</th:block>
+	</div>	
+	
+	<div th:replace="fragments :: pagination('orders')"></div>
+	
+	<div class="modal fade" id="orderDetailModal">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+			</div>
+		</div>
+	</div>
+		
+	<div th:replace="fragments :: footer"></div>
+	
+</div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+	moduleURL = "[[@{/orders}]]";
+
+	$(document).ready(function() {
+		handleLinkViewOrderDetails();
+	});
+	
+	function handleLinkViewOrderDetails() {
+		$(".linkOrderDetail").on("click", function(e) {
+			e.preventDefault();
+			linkDetailURL = $(this).attr("href");
+			$("#orderDetailModal").modal("show").find(".modal-content").load(linkDetailURL);
+		});		
+	}
+</script>
+</body>
+</html>
