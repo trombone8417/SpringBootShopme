@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -278,6 +279,35 @@ public class Order extends AbstractAddress {
     @Transient
     public boolean isCOD() {
         return paymentMethod.equals(PaymentMethod.COD);
+    }
+    
+    @Transient
+    public boolean isShipping() {
+        return hasStatus(OrderStatus.SHIPPING);
+    }
+
+    @Transient
+    public boolean isDelivered() {
+        return hasStatus(OrderStatus.DELIVERED);
+    }
+
+    @Transient
+    public boolean isReturned() {
+        return hasStatus(OrderStatus.RETURNED);
+    }
+
+    @Transient
+    public boolean isPicked() {
+        return hasStatus(OrderStatus.PICKED);
+    }
+    
+    public boolean hasStatus(OrderStatus status) {
+        for(OrderTrack aTrack : orderTracks) {
+            if (aTrack.getStatus().equals(status)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
