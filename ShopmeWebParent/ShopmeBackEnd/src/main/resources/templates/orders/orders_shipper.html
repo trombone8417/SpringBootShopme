@@ -5,7 +5,7 @@
 <div class="container-fluid">
 	<div th:replace="navigation :: menu"></div>
 	<div>
-		<h2>Manage Orders (Shipper)</h2>	
+		<h2>Manage Orders</h2>	
 	</div>
 		
 	<div th:replace="fragments :: search_form_and_message" />
@@ -104,6 +104,7 @@
 	moduleURL = "[[@{/orders}]]";
 
 	$(document).ready(function() {
+		$("[name='keyword']").attr("placeholder", "Type #number to search by Order ID");
 		handleLinkViewOrderDetails();
 	});
 	
