@@ -12,6 +12,14 @@
 ![product.png](md-img/frontend/product.png)
 ###### 1-5. 前台-商品內容
 ![product_detail.png](md-img/frontend/product_detail.png)
+###### 1-6. 前台-購物車
+![shopping_cart.png](md-img/frontend/shopping_cart.png)
+###### 1-7. 前台-結帳
+![checkout.png](md-img/frontend/checkout.png)
+###### 1-8. 前台-PayPal
+![paypal.png](md-img/frontend/paypal.png)
+###### 1-9. 前台-PayPal信用卡
+![credit_card.png](md-img/frontend/credit_card.png)
 ###### 2-1. 後台-登入
 ![login.png](md-img/backend/login.png)
 ###### 2-1. 後台-使用者列表
@@ -38,6 +46,20 @@
 ![customers_edit.png](md-img/backend/customers_edit.png)
 ###### 2-1. 後台-前台使用者內容
 ![customers_details.png](md-img/backend/customers_details.png)
+###### 2-1. 後台-前台訂單列表
+![orders.png](md-img/backend/orders.png)
+###### 2-1. 後台-前台訂單內容
+![order_view_overview.png](md-img/backend/order_view_overview.png)
+###### 2-1. 後台-前台訂單內容
+![order_view_product.png](md-img/backend/order_view_product.png)
+###### 2-1. 後台-前台訂單內容
+![order_view_shipping.png](md-img/backend/order_view_shipping.png)
+###### 2-1. 後台-前台訂單內容
+![order_view_track.png](md-img/backend/order_view_track.png)
+###### 2-1. 後台-前台訂單編輯
+![order_edit_add_product.png](md-img/backend/order_edit_add_product.png)
+###### 2-1. 後台-前台訂單編輯
+![order_edit_track.png](md-img/backend/order_edit_track.png)
 ###### 2-1. 後台-一般設定
 ![setting_general.png](md-img/backend/setting_general.png)
 ###### 2-1. 後台-國家設定
