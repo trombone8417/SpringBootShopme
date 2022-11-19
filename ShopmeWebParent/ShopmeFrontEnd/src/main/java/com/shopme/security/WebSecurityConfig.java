@@ -19,11 +19,11 @@ import com.shopme.security.oauth.OAuth2LoginSuccessHandler;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	@Autowired private CustomerOAuth2UserService oAuth2UserService;
-	@Autowired private OAuth2LoginSuccessHandler oAuth2LoginHandler;
-	@Autowired private DatabaseLoginSuccessHandler databaseLoginSuccessHandler;
 
+	@Autowired private CustomerOAuth2UserService oAuth2UserService;
+	@Autowired private OAuth2LoginSuccessHandler oauth2LoginHandler;
+	@Autowired private DatabaseLoginSuccessHandler databaseLoginHandler;
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -32,14 +32,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/account_details", "update_account_details", 
-					"/cart", "address_book/**", "/checkout", "/place_order", "/process_paypal_order").authenticated()
+			.antMatchers("/account_details", "/update_account_details", "/orders/**",
+					"/cart", "/address_book/**", "/checkout", "/place_order", 
+					"/process_paypal_order").authenticated()
 			.anyRequest().permitAll()
 			.and()
 			.formLogin()
 				.loginPage("/login")
 				.usernameParameter("email")
-				.successHandler(databaseLoginSuccessHandler)
+				.successHandler(databaseLoginHandler)
 				.permitAll()
 			.and()
 			.oauth2Login()
@@ -47,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.userInfoEndpoint()
 				.userService(oAuth2UserService)
 				.and()
-				.successHandler(oAuth2LoginHandler)
+				.successHandler(oauth2LoginHandler)
 			.and()
 			.logout().permitAll()
 			.and()
